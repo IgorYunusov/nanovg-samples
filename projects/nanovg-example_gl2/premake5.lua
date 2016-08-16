@@ -21,7 +21,9 @@ do
     libdirs {}
     links {
         "nanovg",
-        "glfw3", "gdi32", "winmm", "user32", "glew32", "glu32","opengl32", "kernel32" 
+        "glfw3", 
+        "glew32",
+        "gdi32", "winmm", "user32", "glu32","opengl32", "kernel32" 
     }
 end
 

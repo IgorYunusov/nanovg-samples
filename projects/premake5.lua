@@ -1,5 +1,6 @@
 -- premake5.lua
 local build_dir="build_".._ACTION
+local glew_dir="glew-2.0.0"
 
 location(build_dir)
 
@@ -39,13 +40,88 @@ filter { "action:vs*" }
     defines { 
         "_CRT_SECURE_NO_WARNINGS",
     }
+    buildoptions {
+        "/wd4819",
+    }
 
 filter {}
     defines { 
         "NVG_SHARED",
     }
+    includedirs {
+        glew_dir.."/include",
+        "glfw/include",
+    }
 
 include "nanovg-example_gl2"
 include "nanovg"
 --include "nanogui"
+--
+project "glfw3"
+do
+    --kind "ConsoleApp"
+    --kind "WindowedApp"
+    --kind "StaticLib"
+    kind "SharedLib"
+    language "C"
+    --language "C++"
+
+    flags{ 
+        --"WinMain" 
+    }
+    files { 
+        "glfw/src/*.c", 
+        "glfw/include/GLFW/*.h",
+    }
+    excludes {
+        "glfw/src/x11_*",
+        "glfw/src/wl_*",
+        "glfw/src/posix_*",
+        "glfw/src/mir_*",
+        "glfw/src/linux_*",
+        "glfw/src/cocoa_*",
+        "glfw/src/glx_*",
+    }
+    includedirs {}
+    defines {
+        "_GLFW_WIN32",
+        "_GLFW_BUILD_DLL",
+    }
+    buildoptions {}
+    libdirs {}
+    links {
+        "gdi32",
+    }
+end
+
+project "glew32"
+do
+    --kind "ConsoleApp"
+    --kind "WindowedApp"
+    --kind "StaticLib"
+    kind "SharedLib"
+    language "C"
+    --language "C++"
+
+    flags{ 
+        --"WinMain" 
+    }
+    files { 
+        glew_dir.."/src/glew.c", 
+        glew_dir.."/include/GL/*.h", 
+    }
+    excludes {
+    }
+    includedirs {
+        glew_dir.."/include",
+    }
+    defines {
+        "GLEW_BUILD",
+    }
+    buildoptions {}
+    libdirs {}
+    links {
+        "OpenGL32",
+    }
+end
 
